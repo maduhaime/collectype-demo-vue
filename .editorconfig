@@ -1,8 +1,23 @@
-[*.{js,jsx,mjs,cjs,ts,tsx,mts,cts,vue,css,scss,sass,less,styl}]
+# EditorConfig configuration
+# https://editorconfig.org
+
+# Top-level configuration
+root = true
+
+# Default settings for all files
+[*]
 charset = utf-8
+end_of_line = lf
 indent_size = 2
 indent_style = space
 insert_final_newline = true
+max_line_length = 140
 trim_trailing_whitespace = true
-end_of_line = lf
-max_line_length = 100
+
+# Vue.js files - More permissive for templates
+[*.vue]
+max_line_length = 200
+
+# Markdown files
+[*.md]
+trim_trailing_whitespace = false

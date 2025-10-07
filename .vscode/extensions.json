@@ -1,8 +1,11 @@
 {
   "recommendations": [
-    "Vue.volar",
+    "aaron-bond.better-comments",
+    "bierner.github-markdown-preview",
+    "bierner.markdown-preview-github-styles",
     "dbaeumer.vscode-eslint",
     "EditorConfig.EditorConfig",
-    "esbenp.prettier-vscode"
+    "esbenp.prettier-vscode",
+    "Vue.volar"
   ]
 }

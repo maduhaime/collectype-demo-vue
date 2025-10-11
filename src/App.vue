@@ -92,7 +92,9 @@ onMounted(async () => {
       <div class="container">
         <PokemonStats :pokemons="collection.items" class="mb-6 is-hidden-touch" />
 
-        <FilterNavbar :piping="piping" :count="filtered.count" @change="handleNavChange" />
+        <div class="block mb-5">
+          <FilterNavbar :piping="piping" :count="filtered.count" @change="handleNavChange" />
+        </div>
 
         <FilterBreadcrumb :piping="piping" class="is-hidden-touch" />
 

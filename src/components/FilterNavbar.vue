@@ -40,8 +40,8 @@ function setFilter(filter: string) {
 </script>
 
 <template>
-  <nav class="navbar is-success mb-5" role="navigation" aria-label="main navigation">
-    <div class="navbar-brand pl-3">
+  <nav class="navbar is-success" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
       <a @click="toggleMenu" class="navbar-burger">
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
@@ -61,7 +61,7 @@ function setFilter(filter: string) {
         <NavbarItem filter="tall()" :piping="piping" @change="setFilter">Tall</NavbarItem>
         <NavbarItem filter="flying() | rare()" :piping="piping" @change="setFilter">Flying + Rare</NavbarItem>
       </div>
-      <div class="navbar-end pr-3 is-hidden-touch">
+      <div class="navbar-endis-hidden-touch">
         <div class="navbar-item">
           Total:
           <span class="count">{{ count }}</span>

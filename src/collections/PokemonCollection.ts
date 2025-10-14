@@ -7,28 +7,28 @@ import type { Pokemon } from '@/models/Pokemon';
  * Inherits all standard collection operations and adds Pokémon-specific business logic.
  */
 export class PokemonFunctions extends FullFunctions<Pokemon> {
-  experienced(minExperience: number = 100): this {
-    return this.numberIsPositive('base_experience').numberGreaterOrEqual('base_experience', minExperience);
+  experienced(min: number = 100): this {
+    return this.begin(`Experienced (${min}+ exp)`).numberIsPositive('base_experience').numberGreaterOrEqual('base_experience', min).end();
   }
 
   flying(): this {
-    return this.arrayIncludes('types', 'flying');
+    return this.begin('Flying').arrayIncludes('types', 'flying').end();
   }
 
   intimidating(): this {
-    return this.setIncludes('abilities', 'intimidate');
+    return this.begin('Intimidating').setIncludes('abilities', 'intimidate').end();
   }
 
   legendary(flag: boolean = true): this {
-    return this.booleanEquals('is_legendary', flag);
+    return this.begin(`Legendary (${flag})`).booleanEquals('is_legendary', flag).end();
   }
 
-  rare(threshold: number = 200): this {
-    return this.numberGreaterOrEqual('base_experience', threshold);
+  rare(min: number = 200): this {
+    return this.begin(`Rare (${min}+ exp)`).numberGreaterOrEqual('base_experience', min).end();
   }
 
-  tall(threshold: number = 20): this {
-    return this.numberGreaterOrEqual('height', threshold);
+  tall(min: number = 20): this {
+    return this.begin(`Tall (${min}+ height)`).numberGreaterOrEqual('height', min).end();
   }
 }
 

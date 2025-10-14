@@ -5,6 +5,7 @@ import type { SortDir } from 'collectype';
 import { PokemonCollection } from '@/collections/PokemonCollection';
 import FilterBreadcrumb from '@/components/FilterBreadcrumb.vue';
 import FilterNavbar from '@/components/FilterNavbar.vue';
+import PaginationBar from '@/components/PaginationBar.vue';
 import PokemonCard from '@/components/PokemonCard.vue';
 import PokemonStats from '@/components/PokemonStats.vue';
 import PokemonTypeStats from '@/components/PokemonTypeStats.vue';
@@ -25,12 +26,15 @@ const fetched: Ref<Pokemon[]> = ref([]);
 /**
  * Collection wrapper for Pokemon operations
  */
-const collection = computed(() => new PokemonCollection(fetched.value));
+const collection = computed(() => {
+  console.log(`Collection initialized with ${fetched.value.length} item(s).`);
+  return new PokemonCollection(fetched.value);
+});
 
 /**
- * Current filter expression
+ * Current pipe expression
  */
-const piping = ref('all()');
+const expression = ref('all()');
 
 /**
  * Current sort field and direction
@@ -39,25 +43,49 @@ const sortField = ref<SortField>('id');
 const sortDir = ref<SortDir>('asc');
 
 /**
+ * Current pagination page
+ */
+const page = ref<number>(1);
+const perPage = ref<number>(20);
+
+/**
  * Filtered and sorted Pokemon collection
  */
 const filtered = computed(() => {
-  return collection.value.fn.pipe(piping.value).sort(sortField.value, sortDir.value);
+  const result = collection.value.fn.pipe(expression.value).sort(sortField.value, sortDir.value);
+  return result;
 });
 
 /**
- * Handles filter changes from navbar
+ * Paginated Pokemon collection
  */
-function handleNavChange(filter: string) {
-  piping.value = filter;
+const paginated = computed(() => {
+  const result = collection.value.fn.pipe(expression.value).sort(sortField.value, sortDir.value).page(page.value, perPage.value);
+  return result;
+});
+
+/**
+ * Handles expression changes
+ */
+function handleExpressionChange(newExpression: string) {
+  page.value = 1;
+  expression.value = newExpression;
 }
 
 /**
- * Handles sort changes from navbar
+ * Handles sort changes
  */
-function handleSortChange(field: SortField, dir: SortDir) {
-  sortField.value = field;
-  sortDir.value = dir;
+function handleSortChange(newSortField: SortField, newSortDir: SortDir) {
+  sortField.value = newSortField;
+  sortDir.value = newSortDir;
+}
+
+/**
+ * Handles pagination changes
+ */
+function handlePageChange(newPage: number, newPerPage: number) {
+  page.value = newPage;
+  perPage.value = newPerPage;
 }
 
 /**
@@ -66,7 +94,7 @@ function handleSortChange(field: SortField, dir: SortDir) {
 onMounted(async () => {
   try {
     fetched.value = pokemons;
-    piping.value = 'all()';
+    expression.value = 'all()';
   } catch (err) {
     console.error('Error fetching Pokemon:', err);
   }
@@ -93,18 +121,22 @@ onMounted(async () => {
         <PokemonStats :pokemons="collection.items" class="mb-6 is-hidden-touch" />
 
         <div class="block mb-5">
-          <FilterNavbar :piping="piping" :count="filtered.count" @change="handleNavChange" />
+          <FilterNavbar :current="expression" :count="filtered.count" @change="handleExpressionChange" />
         </div>
 
-        <FilterBreadcrumb :piping="piping" class="is-hidden-touch" />
+        <FilterBreadcrumb :info="filtered.info" class="is-hidden-touch" />
 
         <PokemonTypeStats :pokemons="filtered.items" />
 
         <SortNavbar :sort-field="sortField" :sort-dir="sortDir" @change="handleSortChange" />
 
+        <hr />
+
+        <PaginationBar :info="paginated.info" @change="handlePageChange" />
+
         <div class="fixed-grid has-1-cols-mobile has-4-cols-tablet has-5-cols-desktop">
           <div class="grid">
-            <PokemonCard v-for="pokemon in filtered.items" :key="pokemon.id" :pokemon="pokemon" />
+            <PokemonCard v-for="pokemon in paginated.items" :key="pokemon.id" :pokemon="pokemon" />
           </div>
         </div>
       </div>

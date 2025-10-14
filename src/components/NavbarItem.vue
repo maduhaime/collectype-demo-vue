@@ -1,24 +1,32 @@
 <script setup lang="ts">
 /**
- * Component props for filter navigation item
+ * Component props for navigation item
  */
 interface Props {
-  filter: string;
-  piping: string;
+  current: string;
+  expression: string;
 }
 
-defineProps<Props>();
+const props = defineProps<Props>();
 
 /**
  * Emits filter change events
  */
-defineEmits<{
-  change: [filter: string];
+const emit = defineEmits<{
+  change: [expression: string];
 }>();
+
+function setExpression() {
+  emit('change', props.expression);
+}
+
+function isActiveClass() {
+  return props.current === props.expression ? 'is-active' : '';
+}
 </script>
 
 <template>
-  <a @click="$emit('change', filter)" class="navbar-item" :class="{ 'is-active': piping === filter }">
+  <a @click.prevent="setExpression()" class="navbar-item" :class="isActiveClass()">
     <slot />
   </a>
 </template>

@@ -41,25 +41,33 @@ function setDir(newDir: SortDir) {
   dir.value = newDir;
   emit('change', field.value, dir.value);
 }
+
+function fieldClass(f: SortField) {
+  return f === field.value ? 'is-active' : '';
+}
+
+function dirClass(d: SortDir) {
+  return d === dir.value ? 'is-active' : '';
+}
 </script>
 
 <template>
   <div class="columns is-mobile">
     <div class="column">
       <div class="buttons has-addons">
-        <button class="button is-info is-small" @click="setField('id')" :class="{ 'is-active': sortField === 'id' }">ID</button>
-        <button class="button is-info is-small" @click="setField('name')" :class="{ 'is-active': sortField === 'name' }">Name</button>
-        <button class="button is-info is-small" @click="setField('species')" :class="{ 'is-active': sortField === 'species' }">Species</button>
-        <button class="button is-info is-small" @click="setField('generation')" :class="{ 'is-active': sortField === 'generation' }">Generation</button>
-        <button class="button is-info is-small" @click="setField('base_experience')" :class="{ 'is-active': sortField === 'base_experience' }">Base Experience</button>
-        <button class="button is-info is-small" @click="setField('height')" :class="{ 'is-active': sortField === 'height' }">Height</button>
-        <button class="button is-info is-small" @click="setField('weight')" :class="{ 'is-active': sortField === 'weight' }">Weight</button>
+        <button class="button is-info is-small" @click="setField('id')" :class="fieldClass('id')">ID</button>
+        <button class="button is-info is-small" @click="setField('name')" :class="fieldClass('name')">Name</button>
+        <button class="button is-info is-small" @click="setField('species')" :class="fieldClass('species')">Species</button>
+        <button class="button is-info is-small" @click="setField('generation')" :class="fieldClass('generation')">Generation</button>
+        <button class="button is-info is-small" @click="setField('base_experience')" :class="fieldClass('base_experience')">Base Experience</button>
+        <button class="button is-info is-small" @click="setField('height')" :class="fieldClass('height')">Height</button>
+        <button class="button is-info is-small" @click="setField('weight')" :class="fieldClass('weight')">Weight</button>
       </div>
     </div>
     <div class="column is-narrow">
       <div class="buttons has-addons is-right">
-        <button class="button is-info is-small" @click="setDir('asc')" :class="{ 'is-active': sortDir === 'asc' }">ASC</button>
-        <button class="button is-info is-small" @click="setDir('desc')" :class="{ 'is-active': sortDir === 'desc' }">DESC</button>
+        <button class="button is-info is-small" @click="setDir('asc')" :class="dirClass('asc')">ASC</button>
+        <button class="button is-info is-small" @click="setDir('desc')" :class="dirClass('desc')">DESC</button>
       </div>
     </div>
   </div>

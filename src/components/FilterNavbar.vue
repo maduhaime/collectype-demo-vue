@@ -7,7 +7,7 @@ import NavbarItem from './NavbarItem.vue';
  */
 interface Props {
   count: number;
-  piping: string;
+  current: string;
 }
 
 defineProps<Props>();
@@ -16,7 +16,7 @@ defineProps<Props>();
  * Emits filter change events
  */
 const emit = defineEmits<{
-  change: [filter: string];
+  change: [expression: string];
 }>();
 
 /**
@@ -34,8 +34,8 @@ function toggleMenu() {
 /**
  * Emits filter change
  */
-function setFilter(filter: string) {
-  emit('change', filter);
+function handleExpressionChange(expression: string) {
+  emit('change', expression);
 }
 </script>
 
@@ -52,14 +52,14 @@ function setFilter(filter: string) {
     <div class="navbar-menu" :class="menuClass">
       <div class="navbar-start">
         <div class="navbar-item">Filters:</div>
-        <NavbarItem filter="all()" :piping="piping" @change="setFilter">All</NavbarItem>
-        <NavbarItem filter="experienced()" :piping="piping" @change="setFilter">Experienced</NavbarItem>
-        <NavbarItem filter="flying()" :piping="piping" @change="setFilter">Flying</NavbarItem>
-        <NavbarItem filter="intimidating()" :piping="piping" @change="setFilter">Intimidating</NavbarItem>
-        <NavbarItem filter="legendary()" :piping="piping" @change="setFilter">Legendary</NavbarItem>
-        <NavbarItem filter="rare()" :piping="piping" @change="setFilter">Rare</NavbarItem>
-        <NavbarItem filter="tall()" :piping="piping" @change="setFilter">Tall</NavbarItem>
-        <NavbarItem filter="flying() | rare()" :piping="piping" @change="setFilter">Flying + Rare</NavbarItem>
+        <NavbarItem expression="all()" :current="current" @change="handleExpressionChange">All</NavbarItem>
+        <NavbarItem expression="experienced()" :current="current" @change="handleExpressionChange">Experienced</NavbarItem>
+        <NavbarItem expression="flying()" :current="current" @change="handleExpressionChange">Flying</NavbarItem>
+        <NavbarItem expression="intimidating()" :current="current" @change="handleExpressionChange">Intimidating</NavbarItem>
+        <NavbarItem expression="legendary()" :current="current" @change="handleExpressionChange">Legendary</NavbarItem>
+        <NavbarItem expression="rare()" :current="current" @change="handleExpressionChange">Rare</NavbarItem>
+        <NavbarItem expression="tall()" :current="current" @change="handleExpressionChange">Tall</NavbarItem>
+        <NavbarItem expression="flying() | rare()" :current="current" @change="handleExpressionChange">Flying + Rare</NavbarItem>
       </div>
       <div class="navbar-endis-hidden-touch">
         <div class="navbar-item">

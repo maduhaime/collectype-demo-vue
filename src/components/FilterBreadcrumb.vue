@@ -1,22 +1,14 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import type { CollectionInfo } from 'collectype';
 
 /**
  * Component props for breadcrumb navigation
  */
 interface Props {
-  piping: string;
+  info: CollectionInfo;
 }
 
 const props = defineProps<Props>();
-
-/**
- * Parsed piping expression into breadcrumb parts
- */
-const breadcrumb = computed(() => {
-  const parts = props.piping.split('|').map((part: string) => part.trim());
-  return parts;
-});
 </script>
 
 <template>
@@ -29,11 +21,11 @@ const breadcrumb = computed(() => {
         <span>Pokemons</span>
       </li>
 
-      <li v-for="(part, index) in breadcrumb" :key="index">
+      <li v-for="(step, index) in props.info.steps" :key="index">
         <span class="icon is-small">
           <i class="fas fa-filter" aria-hidden="true"></i>
         </span>
-        <span>{{ part }}</span>
+        <span>{{ step }}</span>
       </li>
     </ul>
   </nav>

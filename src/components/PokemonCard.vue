@@ -119,7 +119,7 @@ figure {
   justify-content: center;
   align-items: center;
   height: 120px;
-  background-color: var(--bulma-dark);
+  background: radial-gradient(circle, var(--bulma-grey) 0%, var(--bulma-dark) 100%);
 }
 
 img {

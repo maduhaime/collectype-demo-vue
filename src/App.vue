@@ -5,6 +5,7 @@ import type { SortDir } from 'collectype';
 import { PokemonCollection } from '@/collections/PokemonCollection';
 import FilterBreadcrumb from '@/components/FilterBreadcrumb.vue';
 import FilterNavbar from '@/components/FilterNavbar.vue';
+import GenerationStats from '@/components/GenerationStats.vue';
 import PaginationBar from '@/components/PaginationBar.vue';
 import PokemonCard from '@/components/PokemonCard.vue';
 import PokemonStats from '@/components/PokemonStats.vue';
@@ -16,7 +17,7 @@ import type { SortField } from '@/enums/PokemenSort';
 /**
  * Pokemon data import (mocked for demo purposes)
  */
-import { pokemons } from '@/data/pokemons';
+import { pokemons } from '@/data';
 
 /**
  * Reactive reference to fetched Pokemon data
@@ -49,10 +50,15 @@ const page = ref<number>(1);
 const perPage = ref<number>(20);
 
 /**
+ * Current generation filter
+ */
+const generation = ref<number | null>(null);
+
+/**
  * Filtered and sorted Pokemon collection
  */
 const filtered = computed(() => {
-  const result = collection.value.fn.pipe(expression.value).sort(sortField.value, sortDir.value);
+  const result = collection.value.fn.generation(generation.value).pipe(expression.value).sort(sortField.value, sortDir.value);
   return result;
 });
 
@@ -60,7 +66,7 @@ const filtered = computed(() => {
  * Paginated Pokemon collection
  */
 const paginated = computed(() => {
-  const result = collection.value.fn.pipe(expression.value).sort(sortField.value, sortDir.value).page(page.value, perPage.value);
+  const result = collection.value.fn.generation(generation.value).pipe(expression.value).sort(sortField.value, sortDir.value).page(page.value, perPage.value);
   return result;
 });
 
@@ -89,6 +95,12 @@ function handlePageChange(newPage: number, newPerPage: number) {
 }
 
 /**
+ * Handles generation changes
+ */
+function handleGenerationChange(newGeneration: number | null) {
+  generation.value = newGeneration;
+  page.value = 1;
+} /**
  * Initializes Pokemon data on component mount
  */
 onMounted(async () => {
@@ -119,6 +131,8 @@ onMounted(async () => {
     <div v-else>
       <div class="container">
         <PokemonStats :pokemons="collection.items" class="mb-6 is-hidden-touch" />
+
+        <GenerationStats :pokemons="collection.items" :current="generation" @change="handleGenerationChange" class="is-hidden-touch" />
 
         <div class="block mb-5">
           <FilterNavbar :current="expression" :count="filtered.count" @change="handleExpressionChange" />

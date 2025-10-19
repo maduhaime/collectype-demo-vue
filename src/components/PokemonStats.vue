@@ -21,18 +21,10 @@ const collection = new PokemonCollection(props.pokemons);
   <nav class="level is-hidden-touch">
     <div class="level-item has-text-centered">
       <div>
-        <p class="heading">All</p>
-        <p class="title">{{ collection.count }}</p>
-      </div>
-    </div>
-
-    <div class="level-item has-text-centered">
-      <div>
         <p class="heading">Experienced</p>
         <p class="title">{{ collection.fn.experienced().count }}</p>
       </div>
     </div>
-
     <div class="level-item has-text-centered">
       <div>
         <p class="heading">Flying</p>
@@ -61,6 +53,12 @@ const collection = new PokemonCollection(props.pokemons);
       <div>
         <p class="heading">Tall</p>
         <p class="title">{{ collection.fn.tall().count }}</p>
+      </div>
+    </div>
+    <div class="level-item has-text-centered">
+      <div>
+        <p class="heading">Total</p>
+        <p class="title">{{ collection.count }}</p>
       </div>
     </div>
   </nav>

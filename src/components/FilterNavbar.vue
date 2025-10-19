@@ -52,7 +52,7 @@ function handleExpressionChange(expression: string) {
     <div class="navbar-menu" :class="menuClass">
       <div class="navbar-start">
         <div class="navbar-item">Filters:</div>
-        <NavbarItem expression="all()" :current="current" @change="handleExpressionChange">All</NavbarItem>
+        <NavbarItem expression="all()" :current="current" @change="handleExpressionChange">No Filter</NavbarItem>
         <NavbarItem expression="experienced()" :current="current" @change="handleExpressionChange">Experienced</NavbarItem>
         <NavbarItem expression="flying()" :current="current" @change="handleExpressionChange">Flying</NavbarItem>
         <NavbarItem expression="intimidating()" :current="current" @change="handleExpressionChange">Intimidating</NavbarItem>

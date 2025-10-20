@@ -52,7 +52,7 @@ function dirClass(d: SortDir) {
 </script>
 
 <template>
-  <div class="columns is-mobile">
+  <div class="columns mb-0 is-mobile">
     <div class="column">
       <div class="buttons has-addons">
         <button class="button is-info is-small" @click="setField('id')" :class="fieldClass('id')">ID</button>

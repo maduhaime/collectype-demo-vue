@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import { PokemonCollection } from '@/collections/PokemonCollection';
 import type { Pokemon } from '@/models/Pokemon';
 
@@ -12,9 +13,9 @@ interface Props {
 const props = defineProps<Props>();
 
 /**
- * Collection instance for Pokemon statistics calculations
+ * Computed collection wrapper
  */
-const collection = new PokemonCollection(props.pokemons);
+const collection = computed(() => new PokemonCollection(props.pokemons));
 </script>
 
 <template>
@@ -63,3 +64,9 @@ const collection = new PokemonCollection(props.pokemons);
     </div>
   </nav>
 </template>
+
+<style scoped>
+.level-item {
+  width: calc(100% / 8);
+}
+</style>

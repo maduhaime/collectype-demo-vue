@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
-import type { Pokemon } from '@/models/Pokemon';
-import { PokemonCollection } from '@/collections/PokemonCollection';
-import { padLeft } from '@/utils/string';
+import { computed } from 'vue';
 import { Generation } from '@/enums/Generation';
+import { padLeft } from '@/utils/string';
+import { PokemonCollection } from '@/collections/PokemonCollection';
+import type { Pokemon } from '@/models/Pokemon';
 
 /**
  * Component props for generation stats
@@ -25,11 +25,6 @@ const emit = defineEmits<{
 }>();
 
 /**
- * Local generation state
- */
-const generation = ref<number | null>(null);
-
-/**
  * Computed collection wrapper
  */
 const collection = computed(() => new PokemonCollection(props.pokemons));
@@ -43,7 +38,7 @@ const generations = Object.values(Generation).filter((gen) => typeof gen === 'nu
  * Handles generation selection
  */
 function setGeneration(gen: number | null) {
-  generation.value = gen;
+  console.log('Setting generation to:', gen);
   emit('change', gen);
 }
 
@@ -58,20 +53,20 @@ function isActiveClass(gen: number | null): string {
 <template>
   <div class="level is-hidden-touch">
     <!-- Option "All" -->
-    <div :class="'level-item has-text-centered py-2 ' + isActiveClass(null)">
+    <div class="level-item has-text-centered py-2" :class="isActiveClass(null)">
       <div @click="setGeneration(null)" style="cursor: pointer; text-decoration: none">
-        <p class="heading is-size-7">All</p>
-        <a class="title has-text-primary is-size-4">
+        <p class="heading is-size-5">All</p>
+        <a class="title has-text-primary is-size-5">
           {{ padLeft(collection.count, '0', 3) }}
         </a>
       </div>
     </div>
 
     <!-- Generation options -->
-    <div v-for="gen in generations" :key="gen" :class="'level-item has-text-centered py-2 ' + isActiveClass(gen)">
+    <div v-for="gen in generations" :key="gen" class="level-item has-text-centered py-2" :class="isActiveClass(gen)">
       <div @click="setGeneration(gen)" style="cursor: pointer; text-decoration: none">
-        <p class="heading is-size-7">Gen {{ gen }}</p>
-        <a class="title has-text-primary is-size-4">
+        <p class="heading is-size-5">Gen {{ gen }}</p>
+        <a class="title has-text-primary is-size-5">
           {{ padLeft(collection.fn.numberEquals('generation', gen).count, '0', 3) }}
         </a>
       </div>

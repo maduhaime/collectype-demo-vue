@@ -33,6 +33,11 @@ const collection = computed(() => {
 });
 
 /**
+ * Current generation filter
+ */
+const generation = ref<number | null>(null);
+
+/**
  * Current pipe expression
  */
 const expression = ref('all()');
@@ -50,15 +55,25 @@ const page = ref<number>(1);
 const perPage = ref<number>(20);
 
 /**
- * Current generation filter
+ * Generationalized Pokemon collection
  */
-const generation = ref<number | null>(null);
+const generationalized = computed(() => {
+  const result = collection.value.fn.generation(generation.value);
+  return result;
+});
 
 /**
  * Filtered and sorted Pokemon collection
  */
 const filtered = computed(() => {
+  console.log('Applying filters:', {
+    generation: generation.value,
+    expression: expression.value,
+    sortField: sortField.value,
+    sortDir: sortDir.value,
+  });
   const result = collection.value.fn.generation(generation.value).pipe(expression.value).sort(sortField.value, sortDir.value);
+  console.log('Filtered result:', result.count, 'item(s)');
   return result;
 });
 
@@ -69,6 +84,15 @@ const paginated = computed(() => {
   const result = collection.value.fn.generation(generation.value).pipe(expression.value).sort(sortField.value, sortDir.value).page(page.value, perPage.value);
   return result;
 });
+
+/**
+ * Handles generation changes
+ */
+function handleGenerationChange(newGeneration: number | null) {
+  console.log('Handling generation change to:', newGeneration);
+  page.value = 1;
+  generation.value = newGeneration;
+}
 
 /**
  * Handles expression changes
@@ -95,12 +119,6 @@ function handlePageChange(newPage: number, newPerPage: number) {
 }
 
 /**
- * Handles generation changes
- */
-function handleGenerationChange(newGeneration: number | null) {
-  generation.value = newGeneration;
-  page.value = 1;
-} /**
  * Initializes Pokemon data on component mount
  */
 onMounted(async () => {
@@ -130,23 +148,25 @@ onMounted(async () => {
 
     <div v-else>
       <div class="container">
-        <PokemonStats :pokemons="collection.items" class="mb-6 is-hidden-touch" />
-
         <GenerationStats :pokemons="collection.items" :current="generation" @change="handleGenerationChange" class="is-hidden-touch" />
 
-        <div class="block mb-5">
+        <PokemonStats :pokemons="generationalized.items" class="mb-5 is-hidden-touch" />
+
+        <div class="block mb-3">
           <FilterNavbar :current="expression" :count="filtered.count" @change="handleExpressionChange" />
         </div>
 
-        <FilterBreadcrumb :info="filtered.info" class="is-hidden-touch" />
+        <FilterBreadcrumb :info="filtered.info" class="mb-3 is-hidden-touch" />
 
-        <PokemonTypeStats :pokemons="filtered.items" />
+        <hr class="my-3 is-hidden-touch" />
 
-        <SortNavbar :sort-field="sortField" :sort-dir="sortDir" @change="handleSortChange" />
+        <PokemonTypeStats :pokemons="filtered.items" class="is-hidden-touch" />
 
-        <hr />
+        <hr class="mt-3 mb-5 is-hidden-touch" />
 
         <PaginationBar :info="paginated.info" @change="handlePageChange" />
+
+        <SortNavbar :sort-field="sortField" :sort-dir="sortDir" @change="handleSortChange" />
 
         <div class="fixed-grid has-1-cols-mobile has-4-cols-tablet has-5-cols-desktop">
           <div class="grid">

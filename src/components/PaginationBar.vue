@@ -51,7 +51,7 @@ function setPerPage(event: Event) {
 </script>
 
 <template>
-  <nav v-if="info.page" class="pagination is-small" role="navigation">
+  <nav v-if="info.page" class="pagination is-small mb-3" role="navigation">
     <a @click.prevent="setPage(info.page.current - 1)" class="pagination-previous" :class="{ 'is-disabled': info.page.current === 1 }"> Previous </a>
     <a @click.prevent="setPage(info.page.current + 1)" class="pagination-next" :class="{ 'is-disabled': info.page.current === info.page.totalPages }"> Next </a>
 
@@ -68,7 +68,7 @@ function setPerPage(event: Event) {
     </ul>
   </nav>
 
-  <div v-if="info.page" class="columns is-mobile is-vcentered mb-5">
+  <div v-if="info.page" class="columns is-mobile is-vcentered mb-3">
     <div class="column">
       <p class="is-size-7">
         Items <b>{{ info.page.startIndex + 1 }}</b> - <b>{{ info.page.endIndex }}</b> of <b>{{ info.page.totalItems }}</b>
